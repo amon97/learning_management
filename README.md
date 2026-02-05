@@ -15,3 +15,8 @@
 - TypeScript
 - Firebase Authentication
 - Firebase Firestore
+
+## 超願望
+- progateと連携
+- その他諸々と連携
+- 
