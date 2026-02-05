@@ -10,7 +10,7 @@
 - 学習記録一覧表示
 - 学習時間の合計表示
 
-## 使用技術
+## 使用技術(予定v1)
 - React
 - TypeScript
 - Firebase Authentication
