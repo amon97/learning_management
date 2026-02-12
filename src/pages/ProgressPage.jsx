@@ -3,10 +3,20 @@ import LogEntry from '../components/Progress/LogEntry';
 import LogForm from '../components/Progress/LogForm';
 import './ProgressPage.css';
 
+const sortOptions = [
+    { value: 'date-desc', label: '新しい順' },
+    { value: 'date-asc', label: '古い順' },
+    { value: 'duration-desc', label: '学習時間 長い順' },
+    { value: 'duration-asc', label: '学習時間 短い順' },
+    { value: 'title-asc', label: 'タイトル A→Z' },
+    { value: 'title-desc', label: 'タイトル Z→A' },
+];
+
 export default function ProgressPage({ logs, setLogs, categories }) {
     const [showForm, setShowForm] = useState(false);
     const [editingLog, setEditingLog] = useState(null);
     const [filterCategory, setFilterCategory] = useState('all');
+    const [sortBy, setSortBy] = useState('date-desc');
 
     const handleAddLog = (newLog) => {
         setLogs([newLog, ...logs]);
@@ -29,9 +39,17 @@ export default function ProgressPage({ logs, setLogs, categories }) {
         ? logs
         : logs.filter((l) => l.categoryId === filterCategory);
 
-    const sortedLogs = [...filteredLogs].sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-    );
+    const sortedLogs = [...filteredLogs].sort((a, b) => {
+        switch (sortBy) {
+            case 'date-desc': return new Date(b.date) - new Date(a.date);
+            case 'date-asc': return new Date(a.date) - new Date(b.date);
+            case 'duration-desc': return b.duration - a.duration;
+            case 'duration-asc': return a.duration - b.duration;
+            case 'title-asc': return a.title.localeCompare(b.title, 'ja');
+            case 'title-desc': return b.title.localeCompare(a.title, 'ja');
+            default: return new Date(b.date) - new Date(a.date);
+        }
+    });
 
     const getCategory = (categoryId) =>
         categories.find((c) => c.id === categoryId);
@@ -48,22 +66,41 @@ export default function ProgressPage({ logs, setLogs, categories }) {
                 </button>
             </div>
 
-            <div className="progress-page-filters">
-                <button
-                    className={`progress-filter-btn ${filterCategory === 'all' ? 'active' : ''}`}
-                    onClick={() => setFilterCategory('all')}
-                >
-                    すべて
-                </button>
-                {categories.map((cat) => (
+            <div className="progress-controls">
+                <div className="progress-page-filters">
                     <button
-                        key={cat.id}
-                        className={`progress-filter-btn ${filterCategory === cat.id ? 'active' : ''}`}
-                        onClick={() => setFilterCategory(cat.id)}
+                        className={`progress-filter-btn ${filterCategory === 'all' ? 'active' : ''}`}
+                        onClick={() => setFilterCategory('all')}
                     >
-                        {cat.icon} {cat.name}
+                        すべて
                     </button>
-                ))}
+                    {categories.map((cat) => (
+                        <button
+                            key={cat.id}
+                            className={`progress-filter-btn ${filterCategory === cat.id ? 'active' : ''}`}
+                            onClick={() => setFilterCategory(cat.id)}
+                        >
+                            {cat.icon} {cat.name}
+                        </button>
+                    ))}
+                </div>
+
+                {logs.length > 1 && (
+                    <div className="sort-bar">
+                        <span className="sort-bar-label">🔀 並び替え</span>
+                        <select
+                            className="sort-select"
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                        >
+                            {sortOptions.map((opt) => (
+                                <option key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
             </div>
 
             {sortedLogs.length === 0 ? (
