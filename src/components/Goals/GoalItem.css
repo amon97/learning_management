@@ -70,6 +70,13 @@
     margin-top: 2px;
 }
 
+.goal-item-actions {
+    display: flex;
+    gap: var(--space-xs);
+    flex-shrink: 0;
+}
+
+.goal-item-edit,
 .goal-item-delete {
     width: 28px;
     height: 28px;
@@ -84,6 +91,11 @@
     font-size: 0.8rem;
     transition: all var(--transition-fast);
     flex-shrink: 0;
+}
+
+.goal-item-edit:hover {
+    color: var(--color-primary-light);
+    background: rgba(108, 92, 231, 0.1);
 }
 
 .goal-item-delete:hover {

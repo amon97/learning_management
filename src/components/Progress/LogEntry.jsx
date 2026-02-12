@@ -1,7 +1,7 @@
 import { formatRelativeTime, formatDuration } from '../../utils/helpers';
 import './LogEntry.css';
 
-export default function LogEntry({ log, category, onDelete, delay = 0, isLast = false }) {
+export default function LogEntry({ log, category, onDelete, onEdit, delay = 0, isLast = false }) {
     const cat = category || { icon: '📌', name: '不明', color: '#666' };
 
     return (
@@ -13,13 +13,22 @@ export default function LogEntry({ log, category, onDelete, delay = 0, isLast = 
             <div className="log-entry-content">
                 <div className="log-entry-header">
                     <div className="log-entry-title">{log.title}</div>
-                    <button
-                        className="log-entry-delete"
-                        onClick={() => onDelete(log.id)}
-                        title="削除"
-                    >
-                        ✕
-                    </button>
+                    <div className="log-entry-actions">
+                        <button
+                            className="log-entry-edit"
+                            onClick={() => onEdit(log)}
+                            title="編集"
+                        >
+                            ✏️
+                        </button>
+                        <button
+                            className="log-entry-delete"
+                            onClick={() => onDelete(log.id)}
+                            title="削除"
+                        >
+                            ✕
+                        </button>
+                    </div>
                 </div>
                 {log.description && (
                     <div className="log-entry-desc">{log.description}</div>

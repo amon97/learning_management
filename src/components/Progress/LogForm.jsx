@@ -2,22 +2,24 @@ import { useState } from 'react';
 import { generateId } from '../../utils/helpers';
 import './LogForm.css';
 
-export default function LogForm({ categories, onSubmit, onClose }) {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [categoryId, setCategoryId] = useState(categories[0]?.id || '');
-    const [duration, setDuration] = useState(30);
+export default function LogForm({ categories, onSubmit, onClose, editItem }) {
+    const [title, setTitle] = useState(editItem?.title || '');
+    const [description, setDescription] = useState(editItem?.description || '');
+    const [categoryId, setCategoryId] = useState(editItem?.categoryId || categories[0]?.id || '');
+    const [duration, setDuration] = useState(editItem?.duration || 30);
+
+    const isEdit = !!editItem;
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!title.trim() || !categoryId) return;
         onSubmit({
-            id: generateId(),
+            id: isEdit ? editItem.id : generateId(),
             title: title.trim(),
             description: description.trim(),
             categoryId,
             duration: Number(duration),
-            date: new Date().toISOString(),
+            date: isEdit ? editItem.date : new Date().toISOString(),
         });
         onClose();
     };
@@ -29,7 +31,9 @@ export default function LogForm({ categories, onSubmit, onClose }) {
                 onClick={(e) => e.stopPropagation()}
                 onSubmit={handleSubmit}
             >
-                <h3 className="log-form-title">📝 学習ログを追加</h3>
+                <h3 className="log-form-title">
+                    {isEdit ? '✏️ ログを編集' : '📝 学習ログを追加'}
+                </h3>
 
                 <div className="log-form-group">
                     <label className="log-form-label">タイトル</label>
@@ -87,7 +91,7 @@ export default function LogForm({ categories, onSubmit, onClose }) {
                         キャンセル
                     </button>
                     <button type="submit" className="btn-primary">
-                        記録する
+                        {isEdit ? '更新する' : '記録する'}
                     </button>
                 </div>
             </form>

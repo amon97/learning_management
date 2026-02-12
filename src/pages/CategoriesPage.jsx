@@ -5,15 +5,27 @@ import './CategoriesPage.css';
 
 export default function CategoriesPage({ categories, setCategories, logs }) {
     const [showForm, setShowForm] = useState(false);
+    const [editingCategory, setEditingCategory] = useState(null);
 
     const handleAddCategory = (newCat) => {
         setCategories([...categories, newCat]);
+    };
+
+    const handleUpdateCategory = (updated) => {
+        setCategories(
+            categories.map((c) => (c.id === updated.id ? updated : c))
+        );
+        setEditingCategory(null);
     };
 
     const handleDeleteCategory = (id) => {
         if (window.confirm('このカテゴリを削除してもよろしいですか？')) {
             setCategories(categories.filter((c) => c.id !== id));
         }
+    };
+
+    const handleEditCategory = (cat) => {
+        setEditingCategory(cat);
     };
 
     return (
@@ -41,6 +53,7 @@ export default function CategoriesPage({ categories, setCategories, logs }) {
                             category={cat}
                             logs={logs}
                             onDelete={handleDeleteCategory}
+                            onEdit={handleEditCategory}
                             delay={i * 80}
                         />
                     ))}
@@ -51,6 +64,14 @@ export default function CategoriesPage({ categories, setCategories, logs }) {
                 <CategoryForm
                     onSubmit={handleAddCategory}
                     onClose={() => setShowForm(false)}
+                />
+            )}
+
+            {editingCategory && (
+                <CategoryForm
+                    editItem={editingCategory}
+                    onSubmit={handleUpdateCategory}
+                    onClose={() => setEditingCategory(null)}
                 />
             )}
         </div>

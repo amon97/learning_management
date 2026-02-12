@@ -1,6 +1,6 @@
 import './GoalItem.css';
 
-export default function GoalItem({ goal, category, onToggle, onDelete, delay = 0 }) {
+export default function GoalItem({ goal, category, onToggle, onDelete, onEdit, delay = 0 }) {
     const cat = category || { icon: '📌', name: '不明' };
 
     return (
@@ -21,13 +21,22 @@ export default function GoalItem({ goal, category, onToggle, onDelete, delay = 0
                     {cat.icon} {cat.name}
                 </div>
             </div>
-            <button
-                className="goal-item-delete"
-                onClick={() => onDelete(goal.id)}
-                title="削除"
-            >
-                ✕
-            </button>
+            <div className="goal-item-actions">
+                <button
+                    className="goal-item-edit"
+                    onClick={() => onEdit(goal)}
+                    title="編集"
+                >
+                    ✏️
+                </button>
+                <button
+                    className="goal-item-delete"
+                    onClick={() => onDelete(goal.id)}
+                    title="削除"
+                >
+                    ✕
+                </button>
+            </div>
         </div>
     );
 }

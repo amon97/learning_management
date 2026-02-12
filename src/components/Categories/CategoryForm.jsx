@@ -5,17 +5,19 @@ import './CategoryForm.css';
 const iconOptions = ['📚', '💻', '🎨', '⚙️', '☁️', '🔒', '💾', '🧮', '🌐', '📱', '🤖', '📊'];
 const colorOptions = ['#6c5ce7', '#00cec9', '#fdcb6e', '#fd79a8', '#e17055', '#74b9ff', '#00b894', '#a29bfe'];
 
-export default function CategoryForm({ onSubmit, onClose }) {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [icon, setIcon] = useState('📚');
-    const [color, setColor] = useState('#6c5ce7');
+export default function CategoryForm({ onSubmit, onClose, editItem }) {
+    const [name, setName] = useState(editItem?.name || '');
+    const [description, setDescription] = useState(editItem?.description || '');
+    const [icon, setIcon] = useState(editItem?.icon || '📚');
+    const [color, setColor] = useState(editItem?.color || '#6c5ce7');
+
+    const isEdit = !!editItem;
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!name.trim()) return;
         onSubmit({
-            id: generateId(),
+            id: isEdit ? editItem.id : generateId(),
             name: name.trim(),
             description: description.trim(),
             icon,
@@ -31,7 +33,9 @@ export default function CategoryForm({ onSubmit, onClose }) {
                 onClick={(e) => e.stopPropagation()}
                 onSubmit={handleSubmit}
             >
-                <h3 className="category-form-title">📂 新しいカテゴリ</h3>
+                <h3 className="category-form-title">
+                    {isEdit ? '✏️ カテゴリを編集' : '📂 新しいカテゴリ'}
+                </h3>
 
                 <div className="category-form-group">
                     <label className="category-form-label">カテゴリ名</label>
@@ -92,7 +96,7 @@ export default function CategoryForm({ onSubmit, onClose }) {
                         キャンセル
                     </button>
                     <button type="submit" className="btn-primary">
-                        追加する
+                        {isEdit ? '更新する' : '追加する'}
                     </button>
                 </div>
             </form>

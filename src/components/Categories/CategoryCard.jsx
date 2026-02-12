@@ -1,7 +1,7 @@
 import { formatDuration } from '../../utils/helpers';
 import './CategoryCard.css';
 
-export default function CategoryCard({ category, logs, onDelete, delay = 0 }) {
+export default function CategoryCard({ category, logs, onDelete, onEdit, delay = 0 }) {
     const catLogs = logs.filter((l) => l.categoryId === category.id);
     const totalMinutes = catLogs.reduce((sum, l) => sum + l.duration, 0);
 
@@ -26,6 +26,16 @@ export default function CategoryCard({ category, logs, onDelete, delay = 0 }) {
                     {category.icon}
                 </div>
                 <div className="category-card-actions">
+                    <button
+                        className="category-card-action-btn edit"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onEdit(category);
+                        }}
+                        title="編集"
+                    >
+                        ✏️
+                    </button>
                     <button
                         className="category-card-action-btn delete"
                         onClick={(e) => {

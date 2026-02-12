@@ -2,19 +2,21 @@ import { useState } from 'react';
 import { generateId } from '../../utils/helpers';
 import './GoalForm.css';
 
-export default function GoalForm({ categories, onSubmit, onClose }) {
-    const [title, setTitle] = useState('');
-    const [categoryId, setCategoryId] = useState(categories[0]?.id || '');
+export default function GoalForm({ categories, onSubmit, onClose, editItem }) {
+    const [title, setTitle] = useState(editItem?.title || '');
+    const [categoryId, setCategoryId] = useState(editItem?.categoryId || categories[0]?.id || '');
+
+    const isEdit = !!editItem;
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!title.trim()) return;
         onSubmit({
-            id: generateId(),
+            id: isEdit ? editItem.id : generateId(),
             title: title.trim(),
             categoryId,
-            completed: false,
-            weekStart: getLatestMonday(),
+            completed: isEdit ? editItem.completed : false,
+            weekStart: isEdit ? editItem.weekStart : getLatestMonday(),
         });
         onClose();
     };
@@ -26,7 +28,9 @@ export default function GoalForm({ categories, onSubmit, onClose }) {
                 onClick={(e) => e.stopPropagation()}
                 onSubmit={handleSubmit}
             >
-                <h3 className="goal-form-title">🏆 新しいゴール</h3>
+                <h3 className="goal-form-title">
+                    {isEdit ? '✏️ ゴールを編集' : '🏆 新しいゴール'}
+                </h3>
 
                 <div className="goal-form-group">
                     <label className="goal-form-label">目標</label>
@@ -60,7 +64,7 @@ export default function GoalForm({ categories, onSubmit, onClose }) {
                         キャンセル
                     </button>
                     <button type="submit" className="btn-primary">
-                        追加する
+                        {isEdit ? '更新する' : '追加する'}
                     </button>
                 </div>
             </form>

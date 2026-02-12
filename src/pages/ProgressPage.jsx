@@ -5,14 +5,24 @@ import './ProgressPage.css';
 
 export default function ProgressPage({ logs, setLogs, categories }) {
     const [showForm, setShowForm] = useState(false);
+    const [editingLog, setEditingLog] = useState(null);
     const [filterCategory, setFilterCategory] = useState('all');
 
     const handleAddLog = (newLog) => {
         setLogs([newLog, ...logs]);
     };
 
+    const handleUpdateLog = (updated) => {
+        setLogs(logs.map((l) => (l.id === updated.id ? updated : l)));
+        setEditingLog(null);
+    };
+
     const handleDeleteLog = (id) => {
         setLogs(logs.filter((l) => l.id !== id));
+    };
+
+    const handleEditLog = (log) => {
+        setEditingLog(log);
     };
 
     const filteredLogs = filterCategory === 'all'
@@ -69,6 +79,7 @@ export default function ProgressPage({ logs, setLogs, categories }) {
                             log={log}
                             category={getCategory(log.categoryId)}
                             onDelete={handleDeleteLog}
+                            onEdit={handleEditLog}
                             delay={i * 60}
                             isLast={i === sortedLogs.length - 1}
                         />
@@ -81,6 +92,15 @@ export default function ProgressPage({ logs, setLogs, categories }) {
                     categories={categories}
                     onSubmit={handleAddLog}
                     onClose={() => setShowForm(false)}
+                />
+            )}
+
+            {editingLog && (
+                <LogForm
+                    categories={categories}
+                    editItem={editingLog}
+                    onSubmit={handleUpdateLog}
+                    onClose={() => setEditingLog(null)}
                 />
             )}
         </div>

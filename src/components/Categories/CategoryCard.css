@@ -68,6 +68,11 @@
     border-color: var(--color-accent-red);
 }
 
+.category-card-action-btn.edit:hover {
+    color: var(--color-primary-light);
+    border-color: var(--color-primary-light);
+}
+
 .category-card-name {
     font-size: var(--font-lg);
     font-weight: 700;

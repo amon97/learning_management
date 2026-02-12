@@ -6,12 +6,18 @@ import './GoalsPage.css';
 
 export default function GoalsPage({ goals, setGoals, categories }) {
     const [showForm, setShowForm] = useState(false);
+    const [editingGoal, setEditingGoal] = useState(null);
 
     const completedCount = goals.filter((g) => g.completed).length;
     const percentage = calcPercentage(completedCount, goals.length);
 
     const handleAddGoal = (newGoal) => {
         setGoals([...goals, newGoal]);
+    };
+
+    const handleUpdateGoal = (updated) => {
+        setGoals(goals.map((g) => (g.id === updated.id ? updated : g)));
+        setEditingGoal(null);
     };
 
     const handleToggleGoal = (id) => {
@@ -24,6 +30,10 @@ export default function GoalsPage({ goals, setGoals, categories }) {
 
     const handleDeleteGoal = (id) => {
         setGoals(goals.filter((g) => g.id !== id));
+    };
+
+    const handleEditGoal = (goal) => {
+        setEditingGoal(goal);
     };
 
     const getCategory = (categoryId) =>
@@ -93,6 +103,7 @@ export default function GoalsPage({ goals, setGoals, categories }) {
                             category={getCategory(goal.categoryId)}
                             onToggle={handleToggleGoal}
                             onDelete={handleDeleteGoal}
+                            onEdit={handleEditGoal}
                             delay={i * 60}
                         />
                     ))}
@@ -104,6 +115,15 @@ export default function GoalsPage({ goals, setGoals, categories }) {
                     categories={categories}
                     onSubmit={handleAddGoal}
                     onClose={() => setShowForm(false)}
+                />
+            )}
+
+            {editingGoal && (
+                <GoalForm
+                    categories={categories}
+                    editItem={editingGoal}
+                    onSubmit={handleUpdateGoal}
+                    onClose={() => setEditingGoal(null)}
                 />
             )}
         </div>
