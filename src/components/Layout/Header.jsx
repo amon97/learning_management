@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import './Header.css';
 
 export default function Header() {
     const { user, signOut } = useAuth();
+    const [copied, setCopied] = useState(false);
 
     const now = new Date();
     const dateStr = now.toLocaleDateString('ja-JP', {
@@ -28,6 +30,17 @@ export default function Header() {
         }
     };
 
+    const handleShareLink = async () => {
+        const url = `${window.location.origin}/profile`;
+        try {
+            await navigator.clipboard.writeText(url);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch {
+            prompt('公開プロフィールURL:', url);
+        }
+    };
+
     return (
         <header className="header">
             <div className="header-left">
@@ -36,6 +49,13 @@ export default function Header() {
                 </h2>
             </div>
             <div className="header-right">
+                <button
+                    className={`share-link-btn ${copied ? 'copied' : ''}`}
+                    onClick={handleShareLink}
+                    title="公開プロフィールのリンクをコピー"
+                >
+                    {copied ? '✅ コピー済み' : '🔗 共有リンク'}
+                </button>
                 <div className="header-date">📅 {dateStr}</div>
                 <button className="header-logout-btn" onClick={handleSignOut} title="ログアウト">
                     ログアウト

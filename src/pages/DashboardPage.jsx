@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import StatsCard from '../components/Dashboard/StatsCard';
 import ActivityFeed from '../components/Dashboard/ActivityFeed';
 import ProgressChart from '../components/Dashboard/ProgressChart';
+import CategoryTabs from '../components/Dashboard/CategoryTabs';
 import { formatDuration, getThisWeekLogs, calcPercentage } from '../utils/helpers';
 import './DashboardPage.css';
 
@@ -53,6 +55,8 @@ export default function DashboardPage({ logs, categories, goals }) {
                 <ProgressChart logs={logs} categories={categories} />
                 <ActivityFeed logs={logs} categories={categories} />
             </div>
+
+            <CategoryTabs logs={logs} categories={categories} />
         </div>
     );
 }

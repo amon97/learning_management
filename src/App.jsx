@@ -8,6 +8,7 @@ import Header from './components/Layout/Header';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import LoginPage from './pages/LoginPage';
+import PublicProfilePage from './pages/PublicProfilePage';
 import DashboardPage from './pages/DashboardPage';
 import CategoriesPage from './pages/CategoriesPage';
 import ProgressPage from './pages/ProgressPage';
@@ -25,6 +26,7 @@ function AppContent() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/profile" element={<PublicProfilePage />} />
       <Route
         path="/*"
         element={

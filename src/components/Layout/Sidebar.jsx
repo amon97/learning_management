@@ -32,7 +32,7 @@ export default function Sidebar() {
                 <div className="sidebar-logo">
                     <div className="sidebar-logo-icon">🚀</div>
                     <div className="sidebar-logo-text">
-                        <span>Anti-Gravity</span>
+                        <span>Learning Management</span>
                     </div>
                 </div>
 
@@ -54,7 +54,7 @@ export default function Sidebar() {
                 </nav>
 
                 <div className="sidebar-footer">
-                    <p className="sidebar-footer-text">Anti-Gravity v1.0</p>
+                    <p className="sidebar-footer-text">Learning Management v1.0</p>
                 </div>
             </aside>
         </>

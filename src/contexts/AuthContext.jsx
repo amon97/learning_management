@@ -22,6 +22,17 @@ export function AuthProvider({ children }) {
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             setUser(firebaseUser);
             setLoading(false);
+            // Save profile to localStorage for public profile page
+            if (firebaseUser) {
+                localStorage.setItem(
+                    'ag_profile',
+                    JSON.stringify({
+                        displayName: firebaseUser.displayName || '',
+                        photoURL: firebaseUser.photoURL || '',
+                        email: firebaseUser.email || '',
+                    })
+                );
+            }
         });
         return unsubscribe;
     }, []);

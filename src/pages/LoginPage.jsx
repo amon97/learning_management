@@ -33,7 +33,7 @@ export default function LoginPage() {
         <div className="login-page">
             <div className="glass-card login-card">
                 <div className="login-logo">🚀</div>
-                <h1 className="login-title gradient-text">Anti-Gravity</h1>
+                <h1 className="login-title gradient-text">Learning Management</h1>
                 <p className="login-subtitle">エンジニア専用 学習進捗管理</p>
 
                 <button className="login-google-btn" onClick={handleGoogleLogin}>
