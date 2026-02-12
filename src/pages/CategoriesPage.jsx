@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import CategoryCard from '../components/Categories/CategoryCard';
 import CategoryForm from '../components/Categories/CategoryForm';
+import { useDragReorder } from '../hooks/useDragReorder';
 import './CategoriesPage.css';
 
 const sortOptions = [
-    { value: 'default', label: '追加順' },
+    { value: 'default', label: '手動 (ドラッグ&ドロップ)' },
     { value: 'name-asc', label: '名前 A→Z' },
     { value: 'name-desc', label: '名前 Z→A' },
     { value: 'logs-desc', label: 'ログ数 多い順' },
@@ -17,6 +18,7 @@ export default function CategoriesPage({ categories, setCategories, logs }) {
     const [showForm, setShowForm] = useState(false);
     const [editingCategory, setEditingCategory] = useState(null);
     const [sortBy, setSortBy] = useState('default');
+    const { getDragProps, dragOverIndex } = useDragReorder(categories, setCategories);
 
     const handleAddCategory = (newCat) => {
         setCategories([...categories, newCat]);
@@ -42,17 +44,21 @@ export default function CategoriesPage({ categories, setCategories, logs }) {
     const getCatLogs = (catId) => logs.filter((l) => l.categoryId === catId);
     const getCatTime = (catId) => getCatLogs(catId).reduce((s, l) => s + l.duration, 0);
 
-    const sortedCategories = [...categories].sort((a, b) => {
-        switch (sortBy) {
-            case 'name-asc': return a.name.localeCompare(b.name, 'ja');
-            case 'name-desc': return b.name.localeCompare(a.name, 'ja');
-            case 'logs-desc': return getCatLogs(b.id).length - getCatLogs(a.id).length;
-            case 'logs-asc': return getCatLogs(a.id).length - getCatLogs(b.id).length;
-            case 'time-desc': return getCatTime(b.id) - getCatTime(a.id);
-            case 'time-asc': return getCatTime(a.id) - getCatTime(b.id);
-            default: return 0;
-        }
-    });
+    const isManualSort = sortBy === 'default';
+
+    const sortedCategories = isManualSort
+        ? categories
+        : [...categories].sort((a, b) => {
+            switch (sortBy) {
+                case 'name-asc': return a.name.localeCompare(b.name, 'ja');
+                case 'name-desc': return b.name.localeCompare(a.name, 'ja');
+                case 'logs-desc': return getCatLogs(b.id).length - getCatLogs(a.id).length;
+                case 'logs-asc': return getCatLogs(a.id).length - getCatLogs(b.id).length;
+                case 'time-desc': return getCatTime(b.id) - getCatTime(a.id);
+                case 'time-asc': return getCatTime(a.id) - getCatTime(b.id);
+                default: return 0;
+            }
+        });
 
     return (
         <div className="categories-page">
@@ -80,6 +86,9 @@ export default function CategoriesPage({ categories, setCategories, logs }) {
                             </option>
                         ))}
                     </select>
+                    {isManualSort && (
+                        <span className="drag-hint">↕ カードをドラッグして並び替え</span>
+                    )}
                 </div>
             )}
 
@@ -91,14 +100,19 @@ export default function CategoriesPage({ categories, setCategories, logs }) {
             ) : (
                 <div className="categories-grid">
                     {sortedCategories.map((cat, i) => (
-                        <CategoryCard
+                        <div
                             key={cat.id}
-                            category={cat}
-                            logs={logs}
-                            onDelete={handleDeleteCategory}
-                            onEdit={handleEditCategory}
-                            delay={i * 80}
-                        />
+                            className={`drag-wrapper ${isManualSort ? 'draggable' : ''} ${dragOverIndex === i && isManualSort ? 'drag-over' : ''}`}
+                            {...(isManualSort ? getDragProps(i) : {})}
+                        >
+                            <CategoryCard
+                                category={cat}
+                                logs={logs}
+                                onDelete={handleDeleteCategory}
+                                onEdit={handleEditCategory}
+                                delay={i * 80}
+                            />
+                        </div>
                     ))}
                 </div>
             )}

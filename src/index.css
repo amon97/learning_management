@@ -294,6 +294,34 @@ ol {
   gap: 0;
 }
 
+/* Drag & Drop */
+.drag-wrapper {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  border-radius: var(--radius-lg);
+}
+
+.drag-wrapper.draggable {
+  cursor: grab;
+}
+
+.drag-wrapper.draggable:active {
+  cursor: grabbing;
+}
+
+.drag-wrapper.drag-over {
+  outline: 2px dashed var(--color-primary-light);
+  outline-offset: 4px;
+  border-radius: var(--radius-lg);
+  background: rgba(108, 92, 231, 0.05);
+}
+
+.drag-hint {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  font-style: italic;
+  animation: pulse 2s ease-in-out infinite;
+}
+
 /* ========================================
    Animations
    ======================================== */

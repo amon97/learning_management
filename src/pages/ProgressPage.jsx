@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import LogEntry from '../components/Progress/LogEntry';
 import LogForm from '../components/Progress/LogForm';
+import { useDragReorder } from '../hooks/useDragReorder';
 import './ProgressPage.css';
 
 const sortOptions = [
+    { value: 'manual', label: '手動 (ドラッグ&ドロップ)' },
     { value: 'date-desc', label: '新しい順' },
     { value: 'date-asc', label: '古い順' },
     { value: 'duration-desc', label: '学習時間 長い順' },
@@ -17,6 +19,7 @@ export default function ProgressPage({ logs, setLogs, categories }) {
     const [editingLog, setEditingLog] = useState(null);
     const [filterCategory, setFilterCategory] = useState('all');
     const [sortBy, setSortBy] = useState('date-desc');
+    const { getDragProps, dragOverIndex } = useDragReorder(logs, setLogs);
 
     const handleAddLog = (newLog) => {
         setLogs([newLog, ...logs]);
@@ -35,21 +38,25 @@ export default function ProgressPage({ logs, setLogs, categories }) {
         setEditingLog(log);
     };
 
+    const isManualSort = sortBy === 'manual';
+
     const filteredLogs = filterCategory === 'all'
         ? logs
         : logs.filter((l) => l.categoryId === filterCategory);
 
-    const sortedLogs = [...filteredLogs].sort((a, b) => {
-        switch (sortBy) {
-            case 'date-desc': return new Date(b.date) - new Date(a.date);
-            case 'date-asc': return new Date(a.date) - new Date(b.date);
-            case 'duration-desc': return b.duration - a.duration;
-            case 'duration-asc': return a.duration - b.duration;
-            case 'title-asc': return a.title.localeCompare(b.title, 'ja');
-            case 'title-desc': return b.title.localeCompare(a.title, 'ja');
-            default: return new Date(b.date) - new Date(a.date);
-        }
-    });
+    const sortedLogs = isManualSort
+        ? filteredLogs
+        : [...filteredLogs].sort((a, b) => {
+            switch (sortBy) {
+                case 'date-desc': return new Date(b.date) - new Date(a.date);
+                case 'date-asc': return new Date(a.date) - new Date(b.date);
+                case 'duration-desc': return b.duration - a.duration;
+                case 'duration-asc': return a.duration - b.duration;
+                case 'title-asc': return a.title.localeCompare(b.title, 'ja');
+                case 'title-desc': return b.title.localeCompare(a.title, 'ja');
+                default: return new Date(b.date) - new Date(a.date);
+            }
+        });
 
     const getCategory = (categoryId) =>
         categories.find((c) => c.id === categoryId);
@@ -99,6 +106,9 @@ export default function ProgressPage({ logs, setLogs, categories }) {
                                 </option>
                             ))}
                         </select>
+                        {isManualSort && (
+                            <span className="drag-hint">↕ ログをドラッグして並び替え</span>
+                        )}
                     </div>
                 )}
             </div>
@@ -111,15 +121,20 @@ export default function ProgressPage({ logs, setLogs, categories }) {
             ) : (
                 <div className="progress-log-list">
                     {sortedLogs.map((log, i) => (
-                        <LogEntry
+                        <div
                             key={log.id}
-                            log={log}
-                            category={getCategory(log.categoryId)}
-                            onDelete={handleDeleteLog}
-                            onEdit={handleEditLog}
-                            delay={i * 60}
-                            isLast={i === sortedLogs.length - 1}
-                        />
+                            className={`drag-wrapper ${isManualSort ? 'draggable' : ''} ${dragOverIndex === i && isManualSort ? 'drag-over' : ''}`}
+                            {...(isManualSort ? getDragProps(i) : {})}
+                        >
+                            <LogEntry
+                                log={log}
+                                category={getCategory(log.categoryId)}
+                                onDelete={handleDeleteLog}
+                                onEdit={handleEditLog}
+                                delay={i * 60}
+                                isLast={i === sortedLogs.length - 1}
+                            />
+                        </div>
                     ))}
                 </div>
             )}
