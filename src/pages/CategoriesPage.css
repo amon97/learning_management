@@ -1,0 +1,27 @@
+.categories-page {
+    animation: fadeIn 0.4s ease;
+}
+
+.categories-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-xl);
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-lg);
+}
+
+.categories-empty {
+    text-align: center;
+    padding: var(--space-3xl);
+    color: var(--text-tertiary);
+}
+
+.categories-empty-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-md);
+}

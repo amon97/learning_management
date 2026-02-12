@@ -1,0 +1,92 @@
+.goal-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    background: var(--bg-glass);
+    border: 1px solid var(--border-secondary);
+    transition: all var(--transition-normal);
+    animation: slideInUp 0.4s ease forwards;
+    opacity: 0;
+}
+
+.goal-item:hover {
+    background: var(--bg-glass-hover);
+    border-color: var(--border-primary);
+}
+
+.goal-item.completed {
+    opacity: 0.7;
+}
+
+.goal-item-check {
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--border-secondary);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: transparent;
+    transition: all var(--transition-normal);
+    flex-shrink: 0;
+}
+
+.goal-item-check:hover {
+    border-color: var(--color-accent-green);
+}
+
+.goal-item.completed .goal-item-check {
+    background: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+    color: white;
+}
+
+.goal-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.goal-item-title {
+    font-size: var(--font-sm);
+    font-weight: 600;
+}
+
+.goal-item.completed .goal-item-title {
+    text-decoration: line-through;
+    color: var(--text-tertiary);
+}
+
+.goal-item-category {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
+    margin-top: 2px;
+}
+
+.goal-item-delete {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    border: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.goal-item-delete:hover {
+    color: var(--color-accent-red);
+    background: rgba(225, 112, 85, 0.1);
+}

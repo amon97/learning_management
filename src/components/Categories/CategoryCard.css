@@ -1,0 +1,94 @@
+.category-card {
+    padding: var(--space-lg);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 4px;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+}
+
+.category-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+}
+
+.category-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.category-card-actions {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+.category-card-action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-glass);
+    border: 1px solid var(--border-secondary);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.category-card-action-btn:hover {
+    background: var(--bg-glass-hover);
+    color: var(--text-primary);
+}
+
+.category-card-action-btn.delete:hover {
+    color: var(--color-accent-red);
+    border-color: var(--color-accent-red);
+}
+
+.category-card-name {
+    font-size: var(--font-lg);
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+}
+
+.category-card-desc {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-md);
+}
+
+.category-card-stats {
+    display: flex;
+    gap: var(--space-lg);
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
+}
+
+.category-card-stats span {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}

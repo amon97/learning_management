@@ -1,0 +1,7 @@
+.skills-page {
+    animation: fadeIn 0.4s ease;
+}
+
+.skills-page-content {
+    max-width: 700px;
+}

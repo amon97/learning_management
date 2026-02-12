@@ -1,0 +1,83 @@
+.goals-page {
+    animation: fadeIn 0.4s ease;
+}
+
+.goals-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-xl);
+}
+
+.goals-summary {
+    display: flex;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+}
+
+.goals-summary-card {
+    padding: var(--space-lg);
+    flex: 1;
+    text-align: center;
+}
+
+.goals-summary-value {
+    font-size: var(--font-2xl);
+    font-weight: 800;
+    margin-bottom: var(--space-xs);
+}
+
+.goals-summary-label {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.goals-progress-bar {
+    margin-bottom: var(--space-xl);
+}
+
+.goals-progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+    font-size: var(--font-sm);
+}
+
+.goals-progress-track {
+    height: 10px;
+    background: var(--bg-glass);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.goals-progress-fill {
+    height: 100%;
+    border-radius: 5px;
+    background: var(--gradient-success);
+    transition: width 0.5s ease;
+    animation: progressFill 1s ease;
+}
+
+.goals-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-width: 700px;
+}
+
+.goals-empty {
+    text-align: center;
+    padding: var(--space-3xl);
+    color: var(--text-tertiary);
+}
+
+.goals-empty-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-md);
+}
+
+@media (max-width: 768px) {
+    .goals-summary {
+        flex-direction: column;
+    }
+}
